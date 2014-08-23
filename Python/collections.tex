@@ -1,0 +1,86 @@
+\heading{\pyp{collections}}
+
+\begin{tabbing}
+\hspace{2em}\= \kill
+\pyV{27}{\begin{comment}}
+\thead{\pyt{Counter}}
+\parbox{\linewidth}{Maps elements to count, like a multiset.  Is \pyt{dict} subclass, but \pyf{fromkeys} inapplicable.} \\
+\' $\class()$ \` empty counter \\
+\' $\class(it)$ \` count elements in $it$ \\
+\' $\class(map)$ \` element maps to counts \\
+\'$\pyf{elements}()$ \` iter, elems repeat count times  \\
+\'$\pyf{most\_common}(\optional{n})$ \` $n$ top elem/count pairs \\
+\'$\pyf{update}(\optional{it\_or\_map})$ \` increments counts \\
+\'$\pyf{subtract}(\optional{it\_or\_map})$ \` decrements counts \\
+\' $\insta$\verb#+#$\instb$ \` add counters together \\
+\' $\insta$\verb#-#$\instb$ \` subtract, keeps only positives \\
+\' $\insta$\verb#&#$\instb$ \` intersect, keeps minimum count \\
+\' $\insta$\verb#|#$\instb$ \` union, keeps maximum count \\
+\pyV{27}{\end{comment}}
+\pyV{24}{\begin{comment}}
+\thead{\pyt{deque}}
+\parbox{\linewidth}{Generalizes stacks and queues.}\\
+\'$\pyf{\class}(\optional{it\pyv{26}{,\!\optional{maxlen}}})$ \` inits with $it$'s items \\ \pyv{26}{\` len capped at $maxlen$, items \\ \` discarded from opposite end \\}
+\'$\pyf{append}(x)$ \` add $x$ to right side \\
+\'$\pyf{clear}()$ \` empty the deque \\
+\pyv{27}{\'$\pyf{count}(x)$ \` count items equal to $x$ \\}
+\'$\pyf{extend}(it)$ \` add $it$'s items to right side \\
+\'$\pyf{pop}()$ \` remove, return rightmost item  \\
+\'$\pyf{appendleft}$/$\pyf{extendleft}$/$\pyf{popleft}$ \\ \` similar, but ops on the left side \\
+\pyv{25}{\'$\pyf{remove}(x)$ \` remove first $x$, or \pyt{ValueError} \\}
+\'$\pyf{reverse}()$ \` reverse element order in place \\
+\'$\pyf{rotate}(n)$ \` rotate $n$ step right (left if neg)
+\pyv{27}{\\ \'$\pys{maxlen}$ \` max deque size, \pys{None} if unbound } \pyV{24}{\end{comment}}\pyV{25}{\begin{comment}}
+\\ \thead{\pyt{defaultdict}}
+\' $\class(\!\optional{\!f\!act,\!\optional{..}})$ \` like \pyt{\!d\!i\!c\!t\!};$\!$ missing keys get $\!\!f\!act\!()$ \\
+\' \pys{default\_factory} \` callable$\!$ for$\!$ default$\!$ vals
+\pyV{25}{\end{comment}}
+\pyV{26}{\begin{comment}}
+\\ \thead{\pyt{namedtuple}}
+\parbox{\linewidth}{Fixed len tuple type with named fields.}\\
+\' $\class(name, f\!ields, \optional{verbose, \optional{rename}})$ \\
+\> $name$ \` the type's name \\
+\> $f\!ields$ \` space$\!$/$\!$comma delim \pyt{str}, or seq \\
+\> $verbose$ \` if $\pys{True}$, prints class def \\
+\> $rename$ \` bad fieldnames replaced with \\ \` \verb#_#$d$ positional names for index $d$ \\
+\'$\pyf{\_make}(it)$ \` make instance from sequence \\
+\'$\pyf{\_asdict}()$ \` map of field names to values \\
+\'$\pyf{\_replace}(kwargs)$ \` copy tuple, use k.w. \\ \` args to replace values \\
+\'$\pyf{\_fields}$ \` the tuple of string fieldnames
+\pyV{26}{\end{comment}}
+\pyV{27}{\begin{comment}}
+\\ \thead{\pyt{OrderedDict}}
+\parbox{\linewidth}{Like \pyt{dict}, but remembers insertion order.}\\
+\' $\class(..)$ \` acts like \pyt{dict} constructor \\
+\'$\pyf{popitem}(last\verb#=#\pys{True})$ \` remove and return \\ \` key/value pair, LIFO if $last$ else FIFO
+\pyV{27}{\end{comment}}
+\pyV{26}{\begin{comment}}
+\end{tabbing}
+
+\subheading{Abstract Base Classes}
+Subclasses implement $\mathbb{A}$bstract methods, $\mathbb{M}$ixin methods provided.
+\begin{tabbing}
+\hspace{2em}\= \kill
+\' \pyt{Container} \` $\mathbb{A}$:\pysec{contains} \\
+\' \pyt{Hashable} \` $\mathbb{A}$:\pysec{hash} \\
+\' \pyt{Iterable} \` $\mathbb{A}$:\pysec{iter} \\
+\' \pyt{Iterator}$(\!\pyt{Iterable}\!)$ \` $\mathbb{A}$:\pyf{next}, $\mathbb{M}$:\pysec{iter} \\
+\' \pyt{Sized} \` $\mathbb{A}$:\pysec{len} \\
+\' \pyt{Callable} \` $\mathbb{A}$:\pysec{call} \\
+\' \pyt{Sequence}$(\pyt{Sized},\pyt{Iterable},\pyt{Container})$ \\ \` $\mathbb{A}$:\pysec{getitem}, $\mathbb{M}$:\pysec{contains}, \\
+\` \pysec{iter}, \pysec{reversed}, \pyf{index}, \pyf{count} \\
+\' \pyt{MutableSequence}$(\pyt{Sequence})$ \\ \` $\mathbb{A}$:\pysec{setitem}, \pysec{delitem}, \pyf{insert} \\
+\` $\mathbb{M}:$\pyf{append}, \pyf{reverse}, \pyf{extend}, \\
+\` \pyf{pop}, \pyf{remove}, \pysec{iadd} \\
+\' \pyt{Set}$(\pyt{Sized},\pyt{Iterable},\pyt{Container})$ \\ \` $\mathbb{M}:$\pysec{le\!/\!lt\!/\!eq\!/\!ne\!/\!gt\!/\!ge\!/\!and\!/\!or\!/\!sub\!/\!xor} \\
+\' \pyt{MutableSet}$(\pyt{Set})$ \` $\mathbb{A}:$\pyf{add}, \pyf{discard} \\
+\' \pyt{Mapping}$(\pyt{Sized},\pyt{Iterable},\pyt{Container})$ \\
+\` $\mathbb{A}:$\pysec{getitem}, $\mathbb{M}$:\pysec{contains}, \pyf{keys}, \\
+\` \pyf{items}, \pyf{values}, \pyf{get}, \pysec{eq}, \pysec{ne} \\
+\' \pyt{MutableMapping}$(\pyt{Mapping})$ \\ \` $\mathbb{A}:$\pysec{setitem}, \pysec{delitem}, $\mathbb{M}:$\pyf{pop}, \\ \` \pyf{popitem}, \pyf{clear}, \pyf{update}, \pyf{setdefault} \\
+\' \pyt{MappingView}$(\pyt{Sized})$ \` $\mathbb{M}:$\pysec{len} \\
+\' \pyt{KeysView}$(\pyt{MappingView},\pyt{Set})$ \\ \` $\mathbb{M}:$\pysec{contains}, \pysec{iter} \\
+\' \pyt{ItemsView}$(\pyt{MappingView},\pyt{Set})$ \` \emph{same} \\
+\' \pyt{ValuesView}$(\pyt{MappingView})$ \` \emph{same} \\
+\end{tabbing}
+\pyV{26}{\end{comment}}

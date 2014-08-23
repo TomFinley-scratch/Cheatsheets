@@ -1,0 +1,13 @@
+\heading{\pyp{bisect}}
+
+Binary search for $x$ on sorted seqeucen $s$.  Can operate on $b\!:\!e$ sublist instead.
+
+\begin{tabbing}
+\hspace{2em}\= \kill
+\'$\pyf{bisect\_left}(s,\!x,\!\optional{b,\!\optional{e}})$ \` leftmost index to \\ \` insert $x$ in $s$ to keep $s$ sorted \\
+\'$\pyf{bisect\_right}(s,\!x,\!\optional{b,\!\optional{e}})$ \` rightmost, same \\
+\'$\pyf{bisect}(...)$ \` same as \pyf{bisect\_right} \\
+\'$\pyf{insort\_left}(s,\!x,\!\optional{b,\!\optional{e}})$ \` same, but does \\
+\'$\pyf{insort\_right}(s,\!x,\!\optional{b,\!\optional{e}})$ \` the insertion \\
+\'$\pyf{insort}(...)$ \` same as \pyf{insort\_right} \\
+\end{tabbing}

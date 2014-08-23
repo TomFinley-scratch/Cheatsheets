@@ -1,0 +1,15 @@
+\heading{\pyp{heapq}}
+
+Heap queue algorithm.  Many functions operate on a heapified list $h$.
+
+\begin{tabbing}
+\hspace{2em}\= \kill
+\'$\pyf{heappush}(h, v)$ \` add $v$ to heap
+\\ \'$\pyf{heappop}(h)$ \` remove, return smallest
+\pyv{26}{\\ \'$\pyf{heappushpop}(h, v)$ \` like push then pop}
+\\ \'$\pyf{heapreplace}(h, v)$ \` like pop then push
+\\ \'$\pyf{heapify}(x)$ \` make list $x$ into heap
+\pyv{26}{\\ \'$\pyf{merge}(*x)$ \` given sorted inputs, single \\ \` iterator over merged sorted items}
+\pyv{24}{\\ \'$\pyf{nlargest}(n, it\pyv{25}{, \optional{key}})$ \` top $\!n\!$ items from $it$\pyv{25}{, \\ \` or with top values from $key(x)$}}
+\pyv{24}{\\ \'$\pyf{nsmallest}(n, it\pyv{25}{, \optional{key}})$ \` same, but $n$ least}
+\end{tabbing}

@@ -1,0 +1,104 @@
+\heading{\pyp{datetime}}
+
+\begin{tabbing}
+\hspace{2em}\= \kill
+\'$\pys{MINYEAR}$\` smallest allowed year, 1 \\
+\'$\pys{MAXYEAR}$\` largest allowed year, 9999 \\
+\thead{Shared Methods/Members}
+\'$\pys{\class.min}$ \` most negative/earliest instance \\
+\'$\pys{\class.max}$ \` most positive/earliest instance \\
+\'$\pys{\class.resolution}$ \` smallest possible difference \\
+\'$\pys{initarg}$ \` init args usually members, e.g., \\ \` \pyt{date} have \pys{year}, \pys{month}, \pys{day} members \\
+\thead{\pyt{timedelta}}
+\'$\pyf{\class}(days, seconds, microseconds,$\\ \`$milliseconds, minutes, hours, weeks)$\\ \`all args optional, can be float, default 0 \\ \` only first three args become members \\
+\pyv{27}{\'$\pyf{total\_seconds}()$ \` total seconds in delta \\}
+\thead{\pyt{datetime}}
+\'$\pyf{\class}(year, month, day, {[}hour, minute, second, $\\
+\>$microsecond,\! tzin\!f\!o{]})$ \` date$\!$/$\!$time comb. \\
+\'$\pyf{\class.today}()$ \` current local date/time \\
+\'$\pyf{\class.now}(\optional{tz})$ \` similar, but with \pyt{tzinfo} \\
+\'$\pyf{\class.utcnow}()$ \` current UTC date/time \\
+\'$\pyf{\class.fromtimestamp}(ts, \optional{tz})$ \\ \` local date/time from POSIX timestamp \\
+\'$\pyf{\class.utcfromtimestamp}(ts)$ \\ \` UTC date/time from POSIX timestamp \\
+\'$\pyf{\class.fromordinal}(ord)$ \` $ord\eq 1$ is 1-Jan-1 \\
+\'$\pyf{\class.combine}(d, t)$ \` mix \pyt{date} and \pyt{time} inst. \\
+\'$\pyf{\class.strptime}(s, f)$ \` parse $s$ formatted as $f$ \\
+\'$\pyf{date}()$ \` \pyt{date} instance with the same date \\
+\'$\pyf{time}()$ \` \pyt{time} inst. time, \pys{tzinfo}\eq\pys{None} \\
+\'$\pyf{timetz}()$ \` \pyt{time} inst. with same \pys{tzinfo} \\
+\'$\pyf{replace}(year, month, day, hour, minute,$\\
+\> $second, microsecond, tzin\!f\!o)$ \\ \` new instance, indicated fields replaced \\
+\'$\pyf{astimezone}(tz)$ \` adjusted to timezome \\
+\'$\pyf{utcoffset}()$/$\pyf{dst}()$/$\pyf{tzname}()$ \\ \` calls same method on \pys{tzinfo} with \pys{self} \\
+\'$\pyf{timetuple}()$ \` convert$\!$ to$\!$ \pyp{time}\pyt{.struct\_time} \\
+\'$\pyf{utctimetuple}()$ \` tzone adjusted to UTC \\
+\'$\pyf{toordinal}()$ \` day num if 1-Jan-1 is day 1 \\
+\'$\pyf{weekday}()$ \` weekday, Monday$\eq 0$, etc. \\
+\'$\pyf{isoweekday}()$ \` weekday, Monday$\eq 1$, etc. \\
+\'$\pyf{isocalendar}()$ \` ISO {\small year,weeknum,weekday} \\
+\'$\pyf{isoformat}(\optional{sep})$ \` msecs if $\!\neq\!0$, UTC offset \\ \` \texttt{\small{}YYYY$\!$-MM-DD[$\!sep\!$]HH$\!$:$\!$MM$\!$:$\!$SS[$\!$.mmmmmm]$\!$[+HH$\!$:$\!$MM]} \\
+\'$\pyf{ctime}()$ \` e.g., \verb.Tue Jun 22 21:45:35 2010. \\
+\'$\pyf{strftime}(f)$ \` string formatted by $f$ \\
+\thead{\pyt{date}}
+\'$\pyf{\class}(year, month, day)$ \` init with date \\
+\'$\pyf{\class.today}()$ \` current local date \\
+\'$\pyf{\class.fromtimestamp}(ts)$ \` from POSIX t.s. \\
+\'$\pyf{\class.fromordinal}(ord)$ \` $ord\eq 1$ is 1-Jan-1 \\
+%\'$\pys{year}$ \` in range $[\pys{MINYEAR}, \pys{MAXYEAR}]$ \\
+%\'$\pys{month}$ \` in range $[1, 12]$ \\
+%\'$\pys{day}$ \` in range $1$ to month's days \\
+\'$\pyf{replace}(year, month, day)$ \` get repl. date \\
+\'$\pyf{timetuple}()$ \` convert$\!$ to$\!$ \pyp{time}\pyt{.struct\_time} \\
+\'$\pyf{toordinal}()$ \` day num if 1-Jan-1 is day 1 \\
+\'$\pyf{weekday}()$ \` weekday, Monday$\eq 0$, etc. \\
+\'$\pyf{isoweekday}()$ \` weekday, Monday$\eq 1$, etc. \\
+\'$\pyf{isocalendar}()$ \` ISO {\small year,weeknum,weekday} \\
+\'$\pyf{isoformat}()$ \` in format \verb.YYYY-MM-DD. \\
+\'$\pyf{ctime}()$ \` e.g., \verb.Tue Jun 22 00:00:00 2010. \\
+\'$\pyf{strftime}(f)$ \` date string formatted by $f$ \\
+\thead{\pyt{time}}
+\'$\class(\!hour\!,\!minute,\!second,\!micr\!osecond,\!tzin\!f\!o\!)$ \\
+\` all args optional, default to 0/\pys{None} \\
+\'$\pyf{replace}(\!hour\!,\!minute,\!second,\!micr\!osecond,$\\
+\>$tzin\!f\!o)$ \` new inst. with fields replaced \\
+\'$\pyf{isoformat}()$ \` msecs if $\!\neq\!0$, UTC offset if tz \\ \` \texttt{HH$\!$:$\!$MM$\!$:$\!$SS[$\!$.mmmmmm]$\!$[+HH$\!$:$\!$MM]} \\
+\'$\pyf{strftime}(f)$ \` time string formatted by $f$ \\
+\'$\pyf{utcoffset}()$/$\pyf{dst}()$/$\pyf{tzname}()$ \\ \` calls same method on \pys{tzinfo} with \pys{self} \\
+\thead{\pyt{tzinfo}}
+\'$\pyf{utcoffset}(dt)$ \` delta from UTC inc. DST \\
+\'$\pyf{dst}(dt)$ \` DST timedelta offset ($\!$e.g. 0$\!$/$\!$1 hrs$\!$) \\
+\'$\pyf{tzname}(dt)$ \` description of timezone \\
+\'$\pyf{fromutc}(dt)$ \` UTC time to local time \\ \` subclasses rarely override default
+\end{tabbing}
+
+\subheading{\pyf{strftime}/\pyf{strptime} Format Ops}
+\begin{multicols}{2}
+\begin{tabbing}
+\hspace{2em}\= \kill
+\' \verb#a# \` abr wkday name \\
+\' \verb#A# \` full wkday name \\
+\' \verb#b# \` abr month name \\
+\' \verb#B# \` full month name \\
+\' \verb#c# \` date \& time repr \\
+\' \verb#d# \` day as \verb#01#-\verb#31# \\
+\' \verb#f# \` zero padded $\mu$sec \\
+\' \verb#H# \` hour as \verb#00#-\verb#23# \\
+\' \verb#I# \` hour as \verb#01#-\verb#12# \\
+\' \verb#j# \` yr day as \verb#001#-\verb#366# \\
+\' \verb#m# \` month as \verb#01#-\verb#12# \\
+\' \verb#M# \` min as \verb#00#-\verb#59# \\
+\' \verb#p# \` \verb#AM#, \verb#PM# \\
+\' \verb#S# \` sec as \verb#00#-\verb#61# \\
+\' \verb#U# \` week num \verb#00#-\verb#53# \\
+\` wk 0 before 1$\!^{st}$ Su \\
+\' \verb#w# \` wkdy $\!$a$\!$s$\!$ \verb#0#-\verb#6# ($\!$Su-S$\!$a$\!$) \\
+\' \verb#W# \` $\sim$\verb#U#, but from Mo \\
+\' \verb#x# \` date repr \\
+\' \verb#X# \` time repr \\
+\' \verb#y# \` year as $00-99$ \\
+\' \verb#Y# \` year with century \\
+\' \verb#z# \` UTC $\!$off$\!$.$\!$ as {\small $\pm\!\mathtt{HHMM}$} \\
+\' \verb#Z# \` timezone name
+%\' \verb#%# \`  
+\end{tabbing}
+\end{multicols}

@@ -1,0 +1,437 @@
+\documentclass[landscape,10pt,letterpaper]{article}
+
+\usepackage{epsfig}
+\usepackage{graphics}
+\usepackage{graphicx}
+\usepackage{amsfonts}
+\usepackage{algorithmic}
+\usepackage{enumitem}
+%\usepackage[paperwidth=8.5in,paperheight=11in]{geometry}
+\usepackage[paperwidth=12.75in,paperheight=16.5in]{geometry}
+\usepackage{multicol}
+\usepackage{textcomp}
+\usepackage{ifthen}
+\usepackage{aeguill}
+\usepackage{color}
+\usepackage{verbatim}
+
+\textwidth = 10.6 in
+\textheight = 7.9 in
+\oddsidemargin = -0.73 in
+\evensidemargin = -0.73 in
+\topmargin = -1.2 in
+
+\textwidth = 1.5 \textwidth
+\textheight = 1.5 \textheight
+
+\newcounter{pyversion}
+\setcounter{pyversion}{27}
+
+\pagestyle{empty}
+\newcommand{\columnseprulecolor}{\color{red}}
+
+\newcommand{\argmax}{\mathop{\mbox{argmax}}}
+\newcommand{\argmin}{\mathop{\mbox{argmin}}}
+\newcommand{\heading}[1]{\vspace{-1.5em} \section*{\rule{.5em}{.5em} #1} \vspace{-1.0em}}
+\newcommand{\subheading}[1]{\vspace{-1.2em} \subsection*{#1} \vspace{-0.8em}}
+
+\newcommand{\eq}{\ensuremath{\mbox{\textdblhyphen\textdblhyphen}}}
+
+% Py function or type.
+\newcommand{\pyf}[1]{\ensuremath{\mathop{\mathtt{#1}}}}
+% Py version filter, include only if pyversion at least this...
+\newcommand{\pyv}[2]{\ifthenelse{\value{pyversion}<#1}{}{#2}}
+% Py version filter, include only if pyversion is less than this...
+\newcommand{\pyV}[2]{\ifthenelse{\value{pyversion}<#1}{#2}{}}
+% Py string.
+\newcommand{\pys}[1]{\ensuremath{\mathtt{#1}}}
+% Py keyword.
+\newcommand{\pyk}[1]{\ensuremath{\mathtt{#1}}}
+% Py type.
+\newcommand{\pyt}[1]{\pyf{#1}}
+% Py package.
+\newcommand{\pyp}[1]{\pyf{#1}}
+% Putting stuff in __foo__
+\newcommand{\pysec}[1]{\pyf{\_\_{#1}\_\_}}
+% Optional brackets.
+\newcommand{\optional}[1]{{[}{#1}{]}}
+% For a heading in a tabbing environment.
+\newcommand{\thead}[1]{\` {\large \textbf{#1}} \\}
+
+\newcommand{\class}{\ensuremath{\mathbb{C}}}
+\newcommand{\insta}{\ensuremath{\mathbb{I}}}
+\newcommand{\instb}{\ensuremath{\mathbb{J}}}
+
+\newcommand{\Slash}{\hspace{-.25em}/\hspace{-.25em}}
+
+\begin{document}
+
+\begin{multicols}{6}
+
+Thomas Finley, \texttt{tfinley@gmail.com}, \texttt{http://tfinley.net/}
+
+\heading{Built-in Types}
+\vspace{1.0em}
+%Any type $\pyt{t}$ instantiated with no arguments
+
+%Types $\pyt{t}$ callable as $\pyt{t}()$ to return default (empty, zero) instance.
+
+\subheading{Numerics {\small \pyt{int}, \pyt{float}, \pyt{long}, \pyt{complex}}}
+
+\begin{tabbing}
+\hspace{2em}\= \kill
+\' $\pyf{int}(),\pyf{float}(),\pyf{long}(),\pyf{comple}()$ \` zero \\
+\' $\pyf{int}(x),\pyf{float}(x),\pyf{long}(x),\pyf{complex}(x)$ \\ \` parse string or cast number \\
+\' $\pyf{int}(x, b), \pyf{long}(x, b)$ \` parse $b$-base string $x$ \\
+\' $\pyf{complex}(\optional{a, \optional{b}})$ \` complex number $a+bj$
+\end{tabbing} 
+\begin{tabbing}
+\hspace{2em}\= \kill
+$n.\pyf{conjugate()}$ \` complex conjugate \\
+$n.\pys{numerator}$ \` the $a$ in $\frac{a}{b}$ \\
+$n.\pys{denominator}$ \` the $b$ in $\frac{a}{b}$ \\
+$n.\pys{real}$ \` the $a$ in $a+bj$ \\
+$n.\pys{imag}$ \` the $b$ in $a+bj$
+\pyv{27}{\\ \'$n.\pyf{bit\_length}()$ \` bits to hold $n$ (int/long)}
+\pyv{26}{\\ \'$n.\pyf{as\_integer\_ratio}()$ \` $(a,b)$ with $n=\frac{a}{b}$}
+\end{tabbing}
+Operators: the uniquitous arithmetic \verb.+,-,*,/,\%., bitwise \verb.|,^,&,<<,>>,~., as well as \verb.//. (floored quotient) and \verb.**. (power).
+
+\subheading{Booleans \pyt{bool}}
+
+Booleans can be treated like numbers, where $\pys{False}\eq 0$ and $\pys{True}\eq 1$.
+
+\begin{tabbing}
+\hspace{2em}\= \kill
+\'$\pyf{bool}(\optional{x})$ \` \pys{False} iff $x\eq \pys{None}\!,\pys{False}\!,0\!,$empty
+\end{tabbing}
+
+\subheading{Mutable Sequences}
+
+\begin{tabbing}
+\hspace{2em}\= \kill
+\'$\pyf{append}(x)$ \` add single item $x$ to end \\
+\'$\pyf{extend}(it)$ \` add $it$'s items to end \\
+\'$\pyf{count}(x)$ \` number of items equal to $x$ \\
+\'$\pyf{index}(x,\!\optional{i,\!\optional{j}})$ \` lowest index $k\!\in\![i,j)$ for $x$ \\
+\'$\pyf{insert}(i, x)$ \` insert so item at index $i$ is $x$ \\
+\'$\pyf{pop}(\optional{i})$ \` remove, return last item or item $i$ \\
+\'$\pyf{remove}(x)$ \` delete first element equal to $x$ \\
+\'$\pyf{reverse}()$ \` reverse sequence in place \\
+\'$\pyf{sort}(\optional{cmp, \optional{key, \optional{reverse}}})$ \` sort in place
+\end{tabbing} \vspace{-1em}
+Both \pyf{index} and \pyf{remove} raise \pys{ValueError} if element unfound.
+
+\subheading{Strings \pyt{str}, \pyt{unicode}}
+
+Both types derived from \pyt{basestring}.
+
+Below, $st$ is the string instance.  For methods, when $b$, $e$ appear, assume the operation is limited to the substring from $b$ inclusive to $e$ exclusive.
+
+\begin{tabbing}
+\hspace{2em}\=\hspace{1em}\= \kill
+\'$\pyf{capitalize}()$ \` only first char uppercase \\
+\'$\pyf{center}(w, \optional{fchar})$ \` $f\!char$ padded to $w$ len \\
+\'$\pyf{count}(s, \optional{b, \optional{e}})$ \` num of non-overlap $s$ \\
+\'$\pyf{decode}(\optional{enc, \optional{err}})$ \` decode encoded string \\
+\'$\pyf{encode}(\optional{enc, \optional{err}})$ \` encode string \\
+\> \pys{enc} \` often \verb.utf8.; see codecs \\
+\> \pys{err} \` \verb.strict., raise \pyt{UnicodeError} \\
+\` \verb.ignore., \verb.xmlcharrefreplace. \\
+\` \verb.replace., \verb.backslashreplace. \\
+\'$\pyf{endswith}(s, \optional{b, \optional{e}})$ \` suffix is $s$ \\ %\pyv{25}{or one of $s$ for tuple} \\
+%\'$\pyf{endswith}(s, \optional{b, \optional{e}})$ \`   (py2.5) \\
+\'$\pyf{expandtabs}(\optional{tabsize})$ \` subs tab w/spaces \\
+\'$\pyf{find}(s, \optional{b, \optional{e}})$ \` position of $s$ in $st$, or $-1$ \\
+\'$\pyf{format}(*a, *\!*\!kw)$ \` new \{\} style formatting \\
+\'$\pyf{index}(\!s,\!\optional{b,\!\optional{e}}\!)$ \` if unfound raise \pys{ValueError} \\
+\'$\pyf{isalnum}()$ \` consists of alphanumerics \\
+\'$\pyf{isalpha}()$ \` consists of alphabetics \\
+\'$\pyf{isdigit}()$ \` consists of digits \\
+\'$\pyf{islower}()$ \` has alphabetics, all lowercase \\
+\'$\pyf{isspace}()$ \` consists of whitespace \\
+\'$\pyf{istitle}()$ \` has alphabetics, titlecased \\
+\'$\pyf{isupper}()$ \` has alphabetics, all uppercase \\
+\'$\pyf{join}(it)$ \` $it$'s items delimited with string \\
+\'$\pyf{ljust}(w, \optional{f\!char})$ \` right-padded to $w$-len \\
+\'$\pyf{lower}()$ \` lowercase \\
+\'$\pyf{lstrip}(\optional{chars})$ \` remove chars from start \\
+\pyv{25}{\'$\pyf{partition}(sep)$ \` $(pre, sep, su\!f\!)$ or $(st,\!\pys{''},\!\pys{''})$ \\}
+\'$\pyf{replace}(old, new, \optional{c})$ \` replace all or $c$ $old$ \\
+\'$\pyf{rfind}(s, \optional{b, \optional{e}})$ \` like \pyf{find} but from end \\
+\'$\pyf{rindex}(s, \optional{b, \optional{e}})$ \` like \pyf{index} but from end \\
+\'$\pyf{rjust}(w, \optional{f\!char})$ \` left-padded to $w$-len \\
+\pyv{25}{\'$\pyf{rpartition}(sep)$ \` like \pyf{partit\!i\!o\!n} from end \\}
+\pyv{24}{\'$\pyf{rsplit}(\optional{s, \optional{m}})$ \` like \pyf{split} but from end \\}
+\'$\pyf{rstrip}(\optional{cs})$ \` remove chars from end \\
+\'$\pyf{split}(\optional{s, \optional{m}})$ \` $s$-delimited substrings \\
+\> $s$ \` if \pys{None}, whitesp. delim., no \pys{''} result \\
+\> $m$ \` get $m$ substrings, plus remainder \\
+\'$\pyf{splitlines}(\optional{keepends})$ \` list of lines,  \\
+\'$\pyf{startswith}(p, \optional{b, \optional{e}})$ \` prefix is $p$ \\
+\'$\pyf{strip}(\optional{cs})$ \` remove chars from start/end \\
+\'$\pyf{swapcase}()$ \` lower to upper, upper to lower \\
+\'$\pyf{title}()$ \` titlecased (first letters upcased) \\
+\'$\pyf{translate}(tbl, \optional{delchrs})$ \` who uses this?! \\
+\'$\pyf{upper}()$ \` uppercase \\
+\'$\pyf{zfill}(width)$ \` leftfills with \pys{0}, handles \pys{\pm} \\
+\thead{\pyt{unicode}}
+\'$\pyf{isnumeric}()$ \` unicode numeric test \\
+\'$\pyf{isdecimal}()$ \` unciode decimal test
+\end{tabbing}
+
+\pyV{24}{\begin{comment}} % set/frozenset do not exist prior to Python 2.4, though they are in a library package "sets" as Set/ImmutableSet.
+\subheading{Sets \pyt{set}, \pyt{frozenset}}
+
+In this method table, $s$ is our set instance.  The input $t$ can be any iterable.  Editing methods (starting with \pyf{update}) exist for \pyt{set}, not \pyt{frozenset}.
+
+\begin{tabbing}
+\hspace{2em}\= \kill
+\pyv{26}{\'$\pyf{isdisjoint}(t)$ \` if no item also in $t$ \\}
+\'$\pyf{issubset}(t)$ \` if all items also in $t$ \\
+\'$\pyf{issuperset}(t)$ \` if all of $t$'s items also in $s$ \\
+\'$\pyf{union}(t, ...)$ \` set with the items in $t$ or $s$ \\
+\'$\pyf{intersection}(t, ...)$ \` ...in both $t$ and $s$ \\
+\'$\pyf{difference}(t, ...)$ \` ...in $s$ but not $t$ \\
+\'$\pyf{symmetric\_difference}(\!t\!)$ \` either, not both \\
+\'$\pyf{copy}()$ \` give shallow copy \\
+\'$\pyf{update}(t, ...)$ \` add $t$'s items \\
+\'$\pyf{intersection\_update}(t, ...)$ \\ \` keep only items also in $t$ \\
+\'$\pyf{difference\_update}(t, ...)$ \\ \` discard any items also in $t$ \\
+\'$\pyf{symmetric\_difference\_update}(t)$ \\ \` keep items in either set, but not both \\
+\'$\pyf{add}(x)$ \` add $x$ to set \\
+\'$\pyf{remove}(x)$ \` remove $x$, \pyt{KeyError} if $x \not \in s$ \\
+\'$\pyf{discard}(x)$ \` same, doesn't raise \pyt{KeyError} \\
+\'$\pyf{pop}()$ \` remove, return arbitrary item\\
+\` raises \pyt{KeyError} if empty \\
+\'$\pyf{clear}()$ \` remove all items
+\end{tabbing}
+When using operators, unlike the methods, $t$ must be another set.  Inplace operators (\verb.|=., \verb.&=., \verb.-=., \verb.^=.) exist for \pyt{set}s.
+\begin{multicols}{3}
+\begin{tabbing}
+\hspace{2em}\= \kill
+\' $s\verb.<=.t$ \` $s \subseteq t$ \\ 
+\' $s\verb.>=.t$ \` $s \supseteq t$ \\ 
+\' $s\verb.<.t$ \` $s \subset t$ \\ 
+\' $s\verb.>.t$ \` $s \supset t$ \\ 
+\' $s\verb.|.t$ \` $s \cup t$ \\ 
+\' $s\verb.&.t$ \` $s \cap t$ \\ 
+\' $s\verb.-.t$ \` $s \setminus t$ \\
+\' $s\verb.^.t$ \` $s\!\cup\!t\!\setminus\!s\!\cap\!t$
+\end{tabbing}
+\end{multicols}
+\pyV{24}{\end{comment}}
+
+\subheading{Maps \pyt{dict}}
+
+In this method table, $d$ is our map instance
+
+\begin{tabbing}
+\hspace{2em}\=\hspace{1em}\= \kill
+\'$\pyf{iter}(d)$ \` iterator over keys \\
+\'$\pyf{clear}()$ \` empties mapping \\
+\'$\pyf{copy}()$ \` returns copy of map \\
+\'$\pyf{\class.fromkeys}(seq, \optional{val})$ \` make map $d$ so \\
+\` $d[seq[i]]\eq val[i]$, or $\eq \pys{None}$ \\
+\'$\pyf{get}(k, \optional{de\!f})$ \` $d[k]$ if exists, or $de\!f$/\pys{None} \\
+\'$\pyf{has\_key}(k)$ \` if $d[k]$ exists, $k\!\verb. in .\!d$ preferred \\
+\'$\pyf{items}()$ \` list of key, value tuples \\
+\'$\pyf{keys}()$ \` list of keys \\
+\'$\pyf{values}()$ \` list of values \\
+\'$\pyf{iteritems}()$, $\pyf{iterkeys}()$, $\pyf{itervalues}()$ \` \\
+\` same, but iterators, doesn't copy a list \\
+\pyv{27}{\'$\pyf{viewitems}()$, $\pyf{viewkeys}()$, $\pyf{viewvalues}()$ \` \\ \` same, but dynamic ``view'' objects \\}
+\'$\pyf{pop}(k, \optional{de\!f})$ \` remove, return $d[k]$ (or $de\!f$) \\
+\`  \pyt{KeyError} if not default, $k \verb. not in . d$ \\
+\'$\pyf{popitem}()$ \` remove, return arb. key, value \\
+\` raises \pyt{KeyError} if empty \\
+\'$\pyf{setdefault}(k, \optional{de\!f})$ \` if $k\!\not \in\!d$, $d[k]=de\!f$ \\
+\` returns $d[k]$ \\
+\'$\pyf{update}(\optional{o})$ \` add $o$'s mappings
+\end{tabbing}
+
+\subheading{File Objects}
+Aside from actual files, file-like objects implementing a subset of methods/members are commonly used in Python code:
+
+\begin{tabbing}
+\hspace{2em}\=\hspace{1em}\= \kill
+\'$\pyf{close}()$ \` close the file \\
+\'$\pyf{flush}()$ \` flush file's internal buffer \\
+\'$\pyf{fileno}()$ \` integer file descriptor \\
+\'$\pyf{isatty}()$ \` file connected to tty-like device \\
+\'$\pyf{next}()$ \` next input line \\
+\'$\pyf{read}(\optional{s})$ \` read $s$ bytes, or till EOF \\
+\'$\pyf{readline}(\optional{s})$ \` read $s$ bytes, or till EOL \\
+\'$\pyf{readlines}(\optional{s})$ \` read about $s$ byes of lines \\
+%\'$\pyf{xreadlines}()$ \`  \\
+\'$\pyf{seek}(o, \optional{w})$ \` set file position $o$ bytes from \\
+\` start/current/end ($w=0/1/2$) \\
+\'$\pyf{tell}()$ \` file's current position \\
+\'$\pyf{truncate}(\optional{s})$ \` truncate to current pos \\
+\'$\pyf{write}(str)$ \` write $str$ to file \\
+\'$\pyf{writelines}(it)$ \` write strs (no \verb.\n. added) \\
+\'$\pyf{closed}$ \` if file closed \\
+\'$\pyf{encoding}$ \` encoding when writing \pyt{unicode} \\
+\pyv{26}{\'$\pyf{errors}$ \` unicode error handler \\}
+\'$\pyf{mode}$ \` I/O mode for file \\
+\'$\pyf{name}$ \` filename \\
+\'$\pyf{newlines}$ \` detected newline if \verb.U. in mode \\
+\'$\pyf{softspace}$ \` next \verb.print. should add space
+\end{tabbing}
+
+\heading{Special Method Names}
+
+Some behaviors (e.g., acting like number/sequence/map) implementable with special methods.  \emph{Every} method is prefixed/suffixed with \verb.__., and accept $sel\!f$ as first argument (except \verb.__new__.), so these are omitted, so $\pyt{foo}(a)$ is really $\pyt{\_\_foo\_\_}(sel\!f, a)$.
+
+\begin{tabbing}
+\hspace{2em}\= \kill
+\'$\pyf{new}(cls, \optional{..})$ \` new instance of $cls$ (usually) \\
+\'$\pyf{init}(\optional{..})$ \` initialize instance \\
+\'$\pyf{del}()$ \` called when about to be destroyed \\
+\'$\pyf{repr}()$ \` ``formal'' representation \\
+\'$\pyf{str}()$ \` ``informal'' representation \\
+\'$\pyf{lt}\!/\!\pyf{le}\!/\!\pyf{eq}\!/\!\pyf{ne}\!/\!\pyf{gt}\!/\!\pyf{ge}(other)$ \` rich compare \\
+\'$\pyf{cmp}(other)$ \` alternative; neg if $sel\!f\!<\!other$ \\
+\'$\pyf{hash}()$ \` integer used in hashes \\
+\'$\pyf{nonzero}()$ \` if implemented, used in \pyf{bool()} \\
+\'$\pyf{unicode}()$ \` should return unicode \\
+\'$\pyf{getattr}(a)$ \` called \emph{only} if $o.a$ unfound \\
+\'$\pyf{setattr}(a, v)$ \` called on $o.a=v$ attempt \\
+\'$\pyf{delattr}(a)$ \` called on $\pys{del} o.a$ attempt \\
+\'$\pyf{getattribute}(a)$ \` called on $o.a$ attempt \\
+\thead{Emulating Functions}
+\'$\pyf{call}(\optional{args})$ \` called when used as function \\
+\thead{Emulating Containers}
+\'$\pyf{len}()$ \` length of object \\
+\'$\pyf{getitem}(k)$ \` $k$ is int/slice (seq), key (map) \\
+\'$\pyf{setitem}(k,v)$ \` like $\pyt{getitem}$; sets $o[k]=v$ \\
+\'$\pyf{delitem}(k)$ \` removes item at $k$ \\
+\` should raise \pyt{Type/Index/KeyError} if $k$ \\
+\` bad type/seq index/unfound map index \\
+\'$\pyf{iter}()$ \` iterator on items (keys for map) \\
+\'$\pyf{reversed}()$ \` same, but reverse iterator \\
+\'$\pyf{contains}(item)$ \` supports \verb.in./\verb.not in. test \\
+\thead{Emulating Numerics}
+\'$\pyf{add}\Slash{}\pyf{sub}\Slash{}\pyf{mul}\Slash{}\pyf{div}\Slash{}\pyf{truediv}\Slash{}\pyf{floordiv}\Slash{}\pyf{mod}$\\
+\'$\pyf{divmod}\Slash{}\pyf{pow}\Slash{}\pyf{lshift}\Slash{}\pyf{rshift}\Slash{}\pyf{and}\Slash{}\pyf{xor}\Slash{}\pyf{or}(\!b\!)$ \\
+\`supports $a+b$, etc.; \pyt{NotImplemented} \\
+\`raised for unsupported types \\
+\'$\pyf{radd}\Slash{}\pyf{rsub}\Slash{}\cdots(b)$ \` supports $b+a$, etc. \\
+\` called if $b$'s non-\verb.r. operator inapplicable \\
+\'$\pyf{iadd}\Slash{}\pyf{isub}\Slash{}\cdots(b)$ \` supports $a\verb.+=.b$, etc. \\
+\'$\pyf{pow}(y, \optional{z})$ \` supporting $\pyf{pow}$ builtin function \\
+\'$\pyf{neg}\Slash{}\pyf{pos}\Slash{}\pyf{abs}\Slash{}\pyf{invert}()$ \` supports unary \\ \` operators \verb.-., \verb.+., \pyf{abs}(), \verb.~. \\
+\'$\pyf{complex}\Slash{}\pyf{int}\Slash{}\pyf{long}\Slash{}\pyf{float}()$ \` obj as number \\
+\'$\pyf{oct}\Slash{}\pyf{hex}()$ \` string octal/hexidecimal repr
+\pyv{25}{\\ \'$\pyf{index}()$ integer, if used as index }
+\\ \'$\pyf{coerce}(b)$ \` $(a,b)$ as common num. type 
+\pyv{25}{\\ \thead{Implement Context Manager} }
+\pyv{25}{\'$\pyf{enter}()$ \` enter$\!$ context,$\!$ \pys{as} target$\!$ gets$\!$ retval }
+\pyv{25}{\\ \'$\pyf{exit}(exc\_type, exc\_value, traceback)$ }
+\pyv{25}{\\ \`args not \pys{None} when exception raised }
+\pyv{25}{\\ \`\pys{True} retval suppresses; never reraise }
+\end{tabbing}
+
+\heading{Built-in Functions}
+
+%, parsep=1pt
+
+\begin{tabbing}
+\hspace{2em}\= \kill
+$\pyf{abs}(x)$ \` absolute value of $x$ \\
+\pyv{25}{$\pyf{all}(it)$ \` every $x$ in $it$ has $\pyf{bool}(x) \eq \pys{True}$ \\}
+\pyv{25}{$\pyf{any}(it)$ \` any $x$ in $it$ has $\pyf{bool}(x) \eq \pys{True}$ \\}
+\pyv{26}{\'$\pyf{bin}(x)$ \` format number as binary \\}
+\'$\pyf{callable}(obj)$ \` if $obj$ callable \\
+$\pyf{chr}(i)$ \` ASCII to character \\
+$\pyf{classmethod}(func)$ \` first arg to decorated \\ \` method is class instead of instance \\
+\'$\pyf{cmp}(x,y)$ \` negative if $x<y$ \\
+\'$\pyf{compile}(src, fname, mode, \optional{..})$ \\
+%\` Produce a code object from source. \\
+\> $src$ \` source code to compile \\
+\> $fname$ \` fake filename \\
+\> $mode$ \` $\pys{'[exec|eval|single]'}$ if $src$ \\
+\` block/expression/interactive \\
+%from $src$ as if read from \\ \` $fname$, $mode=\pys{'[exec|eval|single]'}$ if $src$ block/expression/interactive. \\
+$\pyf{delattr}(obj, a)$ \` like $\pyk{del}\ obj.a$ \\
+$\pyf{dir}()$ \` current scope's variable names \\
+$\pyf{dir}(obj)$ \` $obj$'s attribute names \\
+$\pyf{divmod}(a,b)$ \` (quotient, remainder) of $\frac{a}{b}$ \\
+\pyv{26}{$\pyf{enumerate}(it, \optional{s\!\!=\!\!0})$ \` yield $(index+s, x)$} \pyV{26}{\'$\pyf{enumerate}(it)$ \` yield $(index, x)$ for $x$ in $it$} \\
+\'$\pyf{eval}(expr, \optional{glob, \optional{loc}})$ \` interpret Python \\ \` expression with scope variables \\
+\'$\pyf{execfile}(fname, \optional{glob, \optional{loc}})$ \\
+\'$\pyf{file}( \ldots )$ \` \pyf{open} preferred \\
+\'$\pyf{filter}(func, it)$ \` $x$ in $it$ with true $func(x)$ \\
+\pyv{26}{\'$\pyf{format}(val, \optional{fspec})$ \` format $val$ by \\ \` format specification mini-language \\}
+\'$\pyf{getattr}(obj,\!a,\!\optional{\mathop{de\!f}})$ \` obj.a if exists, or $de\!f$ \\
+\'$\pyf{globals}()$ \` name-value dict of global vars \\
+\'$\pyf{hasattr}(obj, a)$ \` if $obj.a$ exists \\
+\'$\pyf{hash}(obj)$ \` hashcode of $obj$ \\
+\'$\pyf{help}(\optional{obj})$ \` launch pydoc \\
+\'$\pyf{hex}(x)$ \` format number as hexidecimal \\
+\'$\pyf{id}(obj)$ \` object identifier (C pointer val) \\
+\'$\pyf{input}(\optional{prompt})$ \` evaluate stdin input \\ %\\ \` equiv to $\pyf{eval}(\pyf{raw\_input}(prompt))$ \\
+%\'$\pyf{int}(\optional{x, \optional{base}})$ \` foo \\
+\'$\pyf{isinstance}(obj, cls)$ \` $obj$ instance of $cls$ \\
+\'$\pyf{issubclass}(cls, sup)$ \` $cls$ subclass of $sup$ \\
+\'$\pyf{iter}(obj)$ \` iterator over iterable $obj$ \\
+\`over items (seqs) keys (maps) lines (files) \\
+\'$\pyf{iter}(f, s)$ \` yield $f()$ till $s$ returned \\
+\'$\pyf{len}(s)$ \` sequence length \\
+\'$\pyf{locals}()$ \` name-value dict of local vars \\
+%\'$\pyf{long}(\optional{x, \optional{base}})$ \` foo \\
+\'$\pyf{map}(func, it, ...)$ \` list of $func(x, ...)$ \\
+\pyv{25}{\'$\pyf{max}(it, \optional{key})$ \` $x$ in $it$ with $x$/$key(x)$ max \\}
+\pyv{25}{\'$\pyf{max}(arg1, arg2, ..., \optional{key})$ \\ \` the arg with $arg$/$key(arg)$ max \\}
+\pyV{25}{\'$\pyf{max}(it)$ \` maximum item in $it$ \\}
+\pyV{25}{\'$\pyf{max}(arg1, arg2, ...)$ \` max of all args \\}
+%\'$\pyf{memoryview}(obj)$ \` foo \\
+\'$\pyf{min}(...)$ \` analogous to \pyf{max}, but minimum \\
+\'$\pyf{next}(it, \optional{def})$ \` next item, or $def$ if done \\
+%\'$\pyf{object}()$ \` foo \\
+\'$\pyf{oct}(x)$ \` format number as octal \\
+\'$\pyf{open}(fname, \optional{mode, \optional{bufsize}})$ \\
+\> $fname$ \` file name \\
+\> $mode$ \` \verb.rwab+U. (read, write, append, \\ \` binary, read+write, univ. newline) \\
+\> $bufsize$ \` $0$ none, $1$ line buf., $>\!\!\!1$ size \\
+\'$\pyf{ord}(c)$ \` ASCII code for character \\
+\'$\pyf{pow}(x, y, \optional{z})$ \` ${x^y \bmod z}$ \\
+\pyv{26}{\'$\pyf{print}(\optional{obj, \ldots}, \optional{sep=\pys{'\ '}},$ \\ \> $\optional{end=\pys{'\backslash n'}}, \optional{file=sys.stdout})$ \\ \` write $sep$-delimited $obj$s, $end$, to $file$ \\}
+\'$\pyf{property}(\optional{fget, \optional{fset, \optional{fdel, \optional{doc}}}})$ \\ \` as member $a$ of $obj$, ops on $obj.a$ \\ \` handled by appropriate method \\
+\'$\pyf{range}(\optional{b}, e, \optional{s})$ \` list $[b,\!b\!+\!s,\!...]$ to $e$ noninc. \\ %\` up to $e$ noninclusive \\
+\'$\pyf{raw\_input}(\optional{prompt})$ \` terminal input \\
+\'$\pyf{reduce}(func, it, \optional{init})$ \` $func$ $1^{\mathrm{st}}$ arg $init$ \\
+\'$\pyf{reload}(module)$ \` re-read module code \\
+\'$\pyf{repr}(obj)$ \` eval-able string for $obj$ \\
+\pyv{24}{\'$\pyf{reversed}(seq)$ \` reverse iterator \\}
+\'$\pyf{round}(x, \optional{n\!=\!0})$ \` round $x$ to $n$ places \\
+\'$\pyf{setattr}(obj, a, v)$ \` like $obj.a=v$ \\
+%\'$\pyf{slice}(\optional{b}, e, \optional{s})$ \`  \\
+\'$\pyf{sorted}(it, \optional{cmp, \optional{key, \optional{reverse}}})$ \\ \` sorted list of items $x$ in $it$ \\
+\> $cmp$ \` define ordering like \pyf{cmp} \\
+\> $key$ \` order $key(x)$ instead of $x$ in $it$ \\
+\> $reverse$ \` if true, decending order \\
+\'$\pyf{staticmethod}(func)$ \` first arg to \\ \` decorated method is not instance \\
+%\'$\pyf{str}(\optional{obj})$ \` foo \\
+\'$\pyf{sum}(it, \optional{s=0})$ \` sum of $x$ in $it$, plus $s$ \\
+\'$\pyf{super}(type, \optional{obj\_or\_type})$ \` proxy object \\ \` delegates calls to parent/sibling of $type$ \\
+%\'$\pyf{tuple}(\optional{iterable})$ \` foo \\
+\'$\pyf{type}(obj)$ \` get $obj$'s type \\
+\'$\pyf{type}(name, bases, dict)$ \` make new type \\
+\'$\pyf{unichr}(i)$ \` unicode character given  \\
+%\'$\pyf{unicode}(\optional{obj, \optional{encoding, \optional{errors}}})$ \` foo \\
+\'$\pyf{vars}(\optional{obj})$ \` $obj.\pysec{dict}$ if $obj$ else $\pyf{locals}()$ \\
+\'$\pyf{xrange}(\optional{b}, e, \optional{s})$ \` nonmaterialized \pyf{range} \\
+\'$\pyf{zip}(\optional{it, ...})$ \` list of tuples, $i^\mathrm{th}$ tuple \\ \` contains each iterator's $i^\mathrm{th}$ item
+\end{tabbing}
+
+\input{re}
+\input{datetime}
+\pyv{24}{\input{collections}}
+\input{heapq}
+\input{bisect}
+\input{os}
+
+\end{multicols}
+
+\end{document}

@@ -1,0 +1,91 @@
+\heading{Regular Expressions, \pyp{re}}
+
+Module has these flag constants and functions.  In these, $p$ is a pattern, $s$ is the string we search, $f$ are or-ed flags, $c$ is number of ops.
+\begin{tabbing}
+\hspace{2em}\= \kill
+\'$\pys{IGNORECASE}/\pys{I}$ \` case insensitive-matching \\
+\'$\pys{LOCALE}/\pys{L}$ \` \verb.\wWbBsS. locale dependent \\
+\'$\pys{MULTILINE}/\pys{M}$ \` \verb.^$. match begin/end lines \\
+\'$\pys{DOTALL}/\pys{S}$ \` \verb#.# matches \verb.\n. \\
+\'$\pys{UNICODE}/\pys{U}$ \` Uni. charprop for \verb.\wWbBdDsS. \\
+\'$\pys{VERBOSE}/\pys{X}$ \` space ignored, \verb.#. comments \\
+\'$\pyf{compile}(p, \optional{f})$ \` \pyt{RegexObject} on $p$, flags $f$ \\
+\'$\pyf{search}(p, s, \optional{f})$ \` find match in $s$ \\
+\'$\pyf{match}(p, s, \optional{f})$ \` match start of $s$ \\
+\'$\pyf{split}(p, s, \optional{c\pyv{27}{, \optional{f}}})$ \` $p$ splits $s$ up to $c$ times \\
+\` capturing groups in $p$ included in list \\
+\'$\pyf{findall}(p, s\pyv{24}{, \optional{f}})$ \` $s$ substrs matching $p$ \\
+\` if one group in $p$, item is group string \\
+\` if multiple groups, item is tuple of groups \\
+\'$\pyf{finditer}(p, s\pyv{24}{, \optional{f}})$ \` yields \pyt{MatchObject}s \\
+\'$\pyf{sub}(p, r, s, \optional{c\pyv{27}{, \optional{f}}})$ \` matches$\!$ replaced$\!$ with$\!$ $r$ \\
+\` if$\!$ $r$ func,$\!$ gets$\!$ \pyt{MatchObject},$\!$ returns$\!$ string \\
+\'$\pyf{subn}(p, r, s, \optional{c\pyv{27}{, \optional{f}}})$ \` same,$\!$ but$\!$ returns$\!$ tuple \\ \` \verb.(replaced_string, numsubs). \\
+\'$\pyf{escape}(s)$ \` escape out RE special strings \\
+\thead{\pyt{RegexObject} Methods/Attrs}
+\'$\pyf{search}\Slash\pyf{match}\Slash\pyf{findall}\Slash\pyf{finditer}(s,\!\optional{b,\!\optional{e}})$ \` \\
+\'$\pyf{sub}\Slash\pyf{subn}(r, s, \optional{c})$ \` similar to module funcs \\
+\'$\pyf{split}(s, \optional{c})$ \` but compiled, and $b,\!e$ substr \\
+\'$\pys{flags}$ \` which flags it was compiled with \\
+\'$\pys{groups}$ \` number of capturing groups \\
+\'$\pys{groupindex}$ \` \verb.(?P<id>). names to nums \\
+\'$\pys{pattern}$ \` the pattern that was compiled \\
+\thead{\pyt{MatchObject} Methods/Attrs}
+\'$\pyf{expand}(t)$ \` backslash$\!$ subs$\!$ on$\!$ $t\!$ using$\!$ match \\
+\'$\pyf{group}(\optional{group1, ...})$ \` get indicated group(s) \\
+\'$\pyf{groups}(\optional{de\!f\!=\!\pys{None}})$ \` get all groups, \\ \` replacing empties with $de\!f$ \\
+\'$\pyf{groupdict}(\optional{de\!f})$ \` map$\!$ named$\!$ groups$\!$ to$\!$ grp \\
+\'$\pyf{start}(\optional{grp})$ \` start index of match/group \\
+\'$\pyf{end}(\optional{grp})$ \` end index of match/group \\
+\'$\pyf{span}(\optional{grp})$ \` tuple of start, end \\
+\'$\pyf{pos}$ \` $b$ passed to \pyt{RegexObject} method \\
+\'$\pyf{endpos}$ \` $e$ passed to \pyt{RegexObject} method \\
+\'$\pyf{lastindex}$ \` index of last matched group \\
+\'$\pyf{lastgroup}$ \` name of last matched group \\
+\'$\pyf{re}$ \` \pyt{RegexObject} that produced this \\
+\'$\pyf{string}$ \` string this match came from \\
+\end{tabbing}
+
+\subheading{RE Pattern Syntax}
+\begin{multicols}{2}
+\begin{tabbing}
+\hspace{2em}\= \kill
+\' \verb#.# \` any char but \verb.\n. \\ 
+\' \verb#^# \` match str start \\ 
+\' \verb#$# \` match str end \\ 
+\' \verb#\# \` escape spec. chars \\
+\' \verb#\#$n$ \` match group $n$ \\
+\' \verb#\A# \` match str start \\
+\' \verb#\b# \` word boundary \\
+\' \verb#\d# \` mass decimal \\
+\' \verb#\s# \` whitespace char \\
+\' \verb#\w# \` alphanum or \_ \\
+\' \verb#\Z# \` match str end \\
+\end{tabbing}
+\end{multicols}
+\vspace{-1.6em}
+\begin{tabbing}
+\hspace{2em}\= \kill
+\' \verb#\B#,\verb#\D#,\verb#\S#,\verb#\W# \` compliment of \verb#\b#,\verb#\d#,\verb#\s#,\verb#\w# \\
+\' \verb#\a#,\verb#\b#,\verb#\f#,\verb#\n#,\verb#\r#,\verb#\t#,\verb#\v#,\verb#\x#,\verb#\\# \` reg. escapes \\
+\' \verb#?# \` match $0,1$ reps of preceding \\
+\' \verb#*# \` match $\geq 0$ reps of preceding \\
+\' \verb#+# \` match $\geq 1$ reps of preceding \\
+\' \verb#{m}# \` match $m$ reps of preceding \\
+\' \verb#{m,n}# \` match $m$ to $n$ reps of preceding \\
+\' \verb#*?#, \verb#+?#, \verb#??#, \verb#{m,n}?# \` non-greedy variants \\
+\' \verb#|# \` for $A|B$ match $A$ or $B$ \\
+\' \verb#[#$chars$\verb#]# \` match set of chars \\
+\' \verb#[^#$chars$\verb#]# \` match anything but chars \\
+\' \verb#(...)# \` beginning and end of group \\
+\' \verb#(?iLmsux)# \` set$\!$ flags$\!$ \verb.ILMSUX. in$\!$ the$\!$ pattern \\
+\' \verb#(?:...)# \` non-grouping regular parens \\
+\' \verb#(?P<#$n$\verb#>...)# \` named group $n$ \\
+\' \verb#(?P=#$n$\verb#)# \` match previously named group $n$ \\
+\' \verb-(?#...)- \` a comment, contents ignored \\
+\' \verb#(?=...)# \` lookahead,$\!$ match,$\!$ don't$\!$ consume \\
+\' \verb#(?!...)# \` negative lookahead assertion \\
+\' \verb#(?<=...)# \` positive lookbehind assertion \\
+\' \verb#(?<!...)# \` negative lookbehind assertion \\
+\' \verb#(?(#$id\!/\!name$\verb#)#$y$\verb#|#$n$\verb#)# \\ \` match $y$ if group $id/name$ exists, else $n$
+\end{tabbing}
